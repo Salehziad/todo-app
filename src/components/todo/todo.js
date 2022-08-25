@@ -1,52 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import useForm from '../../hooks/form.js';
-
+import {SettingsContext} from '../../context/setting/settingContext'
 import { v4 as uuid } from 'uuid';
+import List from './List.jsx';
+import { Link } from 'react-router-dom';
 
 const ToDo = () => {
-
+  const myContect=useContext(SettingsContext);
+  console.log(myContect.x);
   const [defaultValues] = useState({
     difficulty: 4,
   });
-  const [list, setList] = useState([]);
+  // const [list, myContect.setList] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
   const { handleChange, handleSubmit } = useForm(addItem, defaultValues);
 
   function addItem(item) {
     item.id = uuid();
+    console.log(item.id);
     item.complete = false;
+    item.show=true;
     console.log(item);
-    setList([...list, item]);
+    myContect.setList([...myContect.list, item]);
   }
 
   function deleteItem(id) {
-    const items = list.filter( item => item.id !== id );
-    setList(items);
+    const items = myContect.list.filter( item => item.id !== id );
+    myContect.setList(items);
   }
 
   function toggleComplete(id) {
 
-    const items = list.map( item => {
-      if ( item.id == id ) {
+    const items = myContect.list.map( item => {
+      if ( item.id === id ) {
         item.complete = ! item.complete;
+        item.show=! item.show;
       }
       return item;
     });
 
-    setList(items);
+    myContect.setList(items);
 
   }
-
   useEffect(() => {
-    let incompleteCount = list.filter(item => !item.complete).length;
+    myContect.list.sort((a,b) => (a.difficulty > b.difficulty) ? 1 : ((b.difficulty > a.difficulty) ? -1 : 0));
+    let incompleteCount = myContect.list.filter(item => !item.complete).length;
     setIncomplete(incompleteCount);
-    document.title = `To Do List: ${incomplete}`;
-  }, [list]);
+    document.title = `To Do myContect.List: ${incomplete}`;
+  }, [myContect.list]);
 
   return (
     <>
       <header>
-        <h1>To Do List: {incomplete} items pending</h1>
+        <h1>To Do myContect.List: {incomplete} items pending</h1>
+        <Link to='/hestory'>hestory</Link>
       </header>
 
       <form onSubmit={handleSubmit}>
@@ -72,17 +79,11 @@ const ToDo = () => {
           <button type="submit">Add Item</button>
         </label>
       </form>
-
-      {list.map(item => (
-        <div key={item.id}>
-          <p>{item.text}</p>
-          <p><small>Assigned to: {item.assignee}</small></p>
-          <p><small>Difficulty: {item.difficulty}</small></p>
-          <div onClick={() => toggleComplete(item.id)}>Complete: {item.complete.toString()}</div>
-          <hr />
-        </div>
-      ))}
-
+      {
+        myContect.list.map((item,idx)=>(
+           <List key={idx} item={item} toggleComplete={toggleComplete} deleteItem={deleteItem}/>
+      ))
+      }
     </>
   );
 };
