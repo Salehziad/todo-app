@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 export const SettingsContext = React.createContext()
 export default function Setting (props){
     const [show,setShow]=useState(true)

@@ -1,15 +1,15 @@
 import React, { useContext } from 'react'
-import {SettingsContext} from './context/setting/settingContext'
+const LOCAL_STORAGE_KEY = "react-todo-list-todos";
 
 export default function Hestory() {
-  const myContect=useContext(SettingsContext);
+  const myContect=JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
   //  const data =()=>(list.map((element, index) => {
   //   if (element % 2 === 0) {
   //     return <h2 key={index}>{element}</h2>;
   //   }
   return (
     <div>
-    {myContect.list.map(item => (
+    {myContect.map(item => (
       item.complete?
         <div key={item.id}>
         <p>{item.text}</p>
