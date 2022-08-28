@@ -10,7 +10,7 @@ const ToDo = () => {
   // console.log(todos);
   const myContect=useContext(SettingsContext);
   // console.log(myContect.x);
-  let storedNames;
+
   const [defaultValues] = useState({
     difficulty: 4,
   });
@@ -77,6 +77,11 @@ const ToDo = () => {
         <label>
           <span>Assigned To</span>
           <input onChange={handleChange} name="assignee" type="text" placeholder="Assignee Name" />
+        </label>
+
+        <label>
+          <span>numbers</span>
+          <input onChange={(e)=>{console.log(e.target.value)}} name="numbers" type="text" placeholder="Assignee Name" />
         </label>
 
         <label>

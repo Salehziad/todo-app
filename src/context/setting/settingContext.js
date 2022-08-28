@@ -16,6 +16,14 @@ export default function Setting (props){
         setSortBy
 
     }
+    useEffect(()=>{
+        // console.log(list);
+        // console.log(list,'ssss');
+        if(list.length>0){
+            // console.log('yesssssss');
+            localStorage.setItem('list', JSON.stringify(list));
+        }
+    },[list])
 return (
 
 <SettingsContext.Provider value={state}>
